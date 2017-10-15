@@ -25,3 +25,6 @@ Runwith:
 Default timeout to successfully log in is 5 seconds, but you happen to be doing
  this on a :potato: you can increase timeout with:
 `python logincheck.py -ac accounts.csv -t 10`
+
+Accounts that succesfully signed in will be printed in your console in the same
+format as input file
