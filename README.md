@@ -18,7 +18,7 @@ accounts.csv:
 ptc,user,pass
 ptc,user2,pass2
 ```
-Runwith:
+Run with:
 `python logincheck.py -ac accounts.csv`
 
 Default timeout to successfully log in is 5 seconds, but you happen to be doing
