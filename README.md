@@ -1,4 +1,4 @@
-# PTC-LoginCheck
+# PoTatoCheck
 
 This is a tool designed to check if an account is able to sign in to PTC
 
@@ -11,7 +11,7 @@ To run you must have:
 * selenium (`pip install selenium`)
 * geckodriver (`https://github.com/mozilla/geckodriver/releases` and add to path)
 * firefox (`https://www.mozilla.org/et/firefox/new/`)
-# Useage
+# Usage
 
 have your accounts ready in this format in the root of the project named
 accounts.csv:
