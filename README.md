@@ -6,14 +6,15 @@ This is a tool designed to check if an account is able to sign in to PTC
 
 To run you must have:
 
-python 2.7+
-configargparse (`pip install configargparse`)
-selenium (`pip install selenium`)
-geckodriver (`https://github.com/mozilla/geckodriver/releases` and add to path)
-firefox (`https://www.mozilla.org/et/firefox/new/`)
+*python 2.7+
+*configargparse (`pip install configargparse`)
+*selenium (`pip install selenium`)
+*geckodriver (`https://github.com/mozilla/geckodriver/releases` and add to
+path)
+*firefox (`https://www.mozilla.org/et/firefox/new/`)
 # Useage
 
-have your accounts readu in this format in the root of the project named
+have your accounts ready in this format in the root of the project named
 accounts.csv:
 ```
 ptc,user,pass
