@@ -9,8 +9,7 @@ To run you must have:
 * python 2.7+
 * configargparse (`pip install configargparse`)
 * selenium (`pip install selenium`)
-* geckodriver (`https://github.com/mozilla/geckodriver/releases` and add to path)
-* firefox (`https://www.mozilla.org/et/firefox/new/`)
+* PhantomJs (`npm install phantomjs`)
 # Usage
 
 have your accounts ready in this format in the root of the project named

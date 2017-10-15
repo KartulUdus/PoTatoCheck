@@ -25,7 +25,7 @@ with open(FILENAME) as ac:
     for hamster in hamsters:
         un = list(hamster)[1]
         pw = list(hamster)[2]
-        driver = webdriver.Firefox()
+        driver = webdriver.PhantomJS()
         driver.get("https://club.pokemon.com/us/pokemon-trainer-club/login")
         assert "Trainer Club" in driver.title
         user = driver.find_element_by_id("username")
