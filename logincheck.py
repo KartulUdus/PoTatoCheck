@@ -16,9 +16,17 @@ parser.add_argument(
     '-t',
     '--timeout',
     help='timeout to wait for signed in hamster',
+    type=int,
     default=5)
+parser.add_argument(
+    '-iu',
+    '--ignoreunactivated',
+    help='Ignore accounts with unactivated e-mail',
+    action='store_true',
+    default=False)
 args = parser.parse_args()
 FILENAME = "{}".format(args.accounts)
+
 
 with open(FILENAME) as ac:
     hamsters = csv.reader(ac)
@@ -38,7 +46,14 @@ with open(FILENAME) as ac:
         try:
             element = WebDriverWait(driver, args.timeout).until(
                 EC.title_contains('Official'))
-            print ",".join(hamster)
+            if args.ignoreunactivated:
+                try:
+                     if driver.find_element_by_id("id_country")>0:
+                        print ",".join(hamster)
+                except Exception:
+                    continue
+            else:
+                print ",".join(hamster)
         except TimeoutException:
             continue
         finally:
