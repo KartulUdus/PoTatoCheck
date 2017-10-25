@@ -20,8 +20,11 @@ Next, create a symlink of PhantomJS binary file to systems bin dirctory:
 # Winows
 
 Download phantomjs from `http://phantomjs.org/download.html`
+
 Move the contents of `phantomjs-x.y.z-windows` to `C:\bin\phantomjs`
+
 Add `C:\bin\phantomjs` to `PATH`
+
 Google `add environment variable to path in windows` if you must
 
 # OSX
