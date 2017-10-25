@@ -9,7 +9,7 @@ To run you must have:
 * python 2.7+
 * configargparse (`pip install configargparse`)
 * selenium (`pip install selenium`)
-* PhantomJs (`npm install phantomjs`)
+* PhantomJs ([General instructions](PhantomJsInstructions.md))
 # Usage
 
 have your accounts ready in this format in the root of the project named
