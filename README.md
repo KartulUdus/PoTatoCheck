@@ -2,6 +2,8 @@
 
 This is a tool designed to check if an account is able to sign in to PTC
 
+⚠️ Potato doesnt check if banned, potato checks if valid and verified⚠️ 
+
 # Install
 
 To run you must have:
