@@ -31,4 +31,5 @@ Accounts that succesfully signed in will be printed in your console in the same
 format as input file
 
 Should you wish to ignore accounts that haven't verified the e-mail (yet) use:
+
 `python logincheck.py -ac accounts.csv -t 10 -iu`
