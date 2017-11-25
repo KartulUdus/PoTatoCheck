@@ -51,10 +51,8 @@ def check(hamsters):
         try:
             un = potato[1]
             pw = potato[2]
-
             driver = webdriver.PhantomJS()
             driver.get("https://club.pokemon.com/us/pokemon-trainer-club/login")
-            assert "Trainer Club" in driver.title
             user = driver.find_element_by_id("username")
             passw = driver.find_element_by_id("password")
             user.clear()
@@ -63,7 +61,7 @@ def check(hamsters):
             passw.send_keys(pw)
             passw.send_keys(Keys.RETURN)
             try:
-                element = WebDriverWait(driver, args.timeout).until(
+                WebDriverWait(driver, args.timeout).until(
                     EC.title_contains('Official'))
                 if args.ignoreunactivated:
                     try:
