@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from itertools import count, groupby
 import psutil
-import multiprocessing
+from multiprocessing import Pool
 import csv
 import configargparse
 LOGIN_URL = 'https://club.pokemon.com/us/pokemon-trainer-club/login'
@@ -83,19 +83,30 @@ def check(hamsters):
             continue
 
 if __name__ == '__main__':
+ ## Declaratopms
     args = get_args()
     FILENAME = '{}'.format(args.accounts)
+
+ ## Check how gig should hamster batch be
     with open(FILENAME) as ac:
         hamsters = csv.reader(ac)
         jobs = (sum (1 for row in hamsters))/args.threads
+
     with open(FILENAME) as ac:
+        ## Calculate optimal amout of hamsters to send to worker
+        pool = Pool(processes=args.threads)
         for g, group in groupby(ac, key=lambda _, c=count(): c.next()/jobs):
-            job = []
-            for i in range(args.threads):
-                 potato = list(group)
-                 p = multiprocessing.Process(target=check, args=[potato])
-                 job.append(p)
-                 p.start()
-
-
+            potato = pool.map_async(check, [list(group)])
+        ## Send jobs to workers
+        try:
+            potato.get()
+            pool.join()
+        ## enable killing it
+        except KeyboardInterrupt:
+            print("Caught KeyboardInterrupt, terminating workers")
+            pool.terminate()
+            pool.join()
+            pool.close()
+            exit(-1)
+        pool.close()
 
