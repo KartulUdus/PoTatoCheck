@@ -10,7 +10,7 @@ import psutil
 import multiprocessing
 import csv
 import configargparse
-
+LOGIN_URL = 'https://club.pokemon.com/us/pokemon-trainer-club/login'
 
 def get_args():
     parser = configargparse.ArgParser(description='PTC-Login-Check')
@@ -47,17 +47,17 @@ def check(hamsters):
 
     args = get_args()
     for hamster in hamsters:
-        potato = hamster.split(",")
+        potato = hamster.split(',')
         potato[-1] = potato[-1].strip()
         try:
             un = potato[1]
             pw = potato[2]
             driver = webdriver.PhantomJS()
-            driver.get("https://club.pokemon.com/us/pokemon-trainer-club/login")
+            driver.get(LOGIN_URL)
             WebDriverWait(driver, args.timeout).until(
             EC.title_contains('Trainer Club'))
-            user = driver.find_element_by_id("username")
-            passw = driver.find_element_by_id("password")
+            user = driver.find_element_by_id('username')
+            passw = driver.find_element_by_id('password')
             user.clear()
             user.send_keys(un)
             passw.clear()
@@ -68,12 +68,12 @@ def check(hamsters):
                     EC.title_contains('Official'))
                 if args.ignoreunactivated:
                     try:
-                         if driver.find_element_by_id("id_country")>0:
-                            print ",".join(potato)
+                         if driver.find_element_by_id('id_country')>0:
+                            print ','.join(potato)
                     except Exception:
                         continue
                 else:
-                    print ",".join(potato)
+                    print ','.join(potato)
             except TimeoutException:
                 continue
             finally:
@@ -84,7 +84,7 @@ def check(hamsters):
 
 if __name__ == '__main__':
     args = get_args()
-    FILENAME = "{}".format(args.accounts)
+    FILENAME = '{}'.format(args.accounts)
     with open(FILENAME) as ac:
         hamsters = csv.reader(ac)
         jobs = (sum (1 for row in hamsters))/args.threads
