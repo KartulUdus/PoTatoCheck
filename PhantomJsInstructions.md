@@ -17,7 +17,7 @@ Next, create a symlink of PhantomJS binary file to systems bin dirctory:
 
 `sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/`
 
-# Winows
+# Windows
 
 Download phantomjs from `http://phantomjs.org/download.html`
 

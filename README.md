@@ -9,8 +9,7 @@ This is a tool designed to check if an account is able to sign in to PTC
 To run you must have:
 
 * python 2.7+
-* configargparse (`pip install configargparse`)
-* selenium (`pip install selenium`)
+* installed requirements (`pip install -r requirements.txt`)
 * PhantomJs ([General instructions](PhantomJsInstructions.md))
 # Usage
 
