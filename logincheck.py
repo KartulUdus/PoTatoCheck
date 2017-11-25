@@ -6,14 +6,15 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from itertools import count, groupby
+import psutil
 import multiprocessing
-
 import csv
 import configargparse
 
 
 def get_args():
     parser = configargparse.ArgParser(description='PTC-Login-Check')
+    lcores = psutil.cpu_count(logical=True)
     parser.add_argument(
         '-ac',
         '--accounts',
@@ -30,9 +31,9 @@ def get_args():
     parser.add_argument(
         '-th',
         '--threads',
-        help='how many threads to run in',
+        help='how many processes to run in',
         type=int,
-        default=6)
+        default=lcores)
 
     parser.add_argument(
         '-iu',
@@ -53,6 +54,8 @@ def check(hamsters):
             pw = potato[2]
             driver = webdriver.PhantomJS()
             driver.get("https://club.pokemon.com/us/pokemon-trainer-club/login")
+            WebDriverWait(driver, args.timeout).until(
+            EC.title_contains('Trainer Club'))
             user = driver.find_element_by_id("username")
             passw = driver.find_element_by_id("password")
             user.clear()
@@ -82,7 +85,6 @@ def check(hamsters):
 if __name__ == '__main__':
     args = get_args()
     FILENAME = "{}".format(args.accounts)
-
     with open(FILENAME) as ac:
         hamsters = csv.reader(ac)
         jobs = (sum (1 for row in hamsters))/args.threads
