@@ -9,7 +9,7 @@ This is a tool designed to check if an account is able to sign in to PTC
 To run you must have:
 
 * python 2.7+
-* installed requirements (`pip install -r requirements.txt`)
+* installed requirements (`pip install -r requirements.txt --upgrade`)
 * PhantomJs ([General instructions](PhantomJsInstructions.md))
 # Usage
 
