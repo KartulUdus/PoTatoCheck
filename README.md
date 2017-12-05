@@ -22,6 +22,10 @@ ptc,user2,pass2
 Run with:
 `python logincheck.py -ac accounts.csv`
 
+If you want your output in a file, please run
+
+`python logincheck.py -ac accounts.csv >verifeid.csv `
+
 Default timeout to successfully log in is 5 seconds, but you happen to be doing
  this on a :potato: you can increase timeout with:
 `python logincheck.py -ac accounts.csv -t 10`

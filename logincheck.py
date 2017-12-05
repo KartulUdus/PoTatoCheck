@@ -72,11 +72,12 @@ def check(hamsters):
                             print ','.join(potato)
                     except Exception:
                         driver.quit()
+                        continue
                 else:
                     print ','.join(potato)
                     driver.quit()
             except TimeoutException:
-                continuegit
+                continue
             finally:
                 driver.quit()
 
