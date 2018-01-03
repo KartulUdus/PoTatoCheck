@@ -1,1 +1,11 @@
-todo
+##############################################################################
+## Settings
+##############################################################################
+
+#accounts:              # Accounts csv file
+#output-file            # Output file
+
+#threads                # How many threads to start
+#ignore-bad             # Ignores accounts with unvalidated e-mails and wrong credentials
+
+#timeout:               # Amount of seconds to timeout after waiting for ptd
