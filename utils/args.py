@@ -29,6 +29,14 @@ def get_args():
         )
 
     parser.add_argument(
+        '-ib',
+        '--ignore-bad',
+        help='don\'t store unverified accounts',
+        action='store_true',
+        default=False
+        )
+
+    parser.add_argument(
         '-t',
         '--timeout',
         help='timeout to wait for signed in hamster',

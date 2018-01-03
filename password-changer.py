@@ -4,6 +4,8 @@ import logging, csv, os, errno
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from itertools import count, groupby
@@ -13,7 +15,8 @@ from utils.args import get_args
 LOGIN_URL = 'https://club.pokemon.com/us/pokemon-trainer-club/login'
 
 logging.basicConfig(level=logging.INFO,
-    format='%(asctime)s [%(threadName)16s][%(module)14s][%(levelname)8s] %(message)s')
+    format='%(asctime)s [%(threadName)16s][%(module)14s]'
+           '[%(levelname)8s] %(message)s')
 
 log = logging.getLogger(__name__)
 args = get_args()
@@ -57,10 +60,13 @@ def create_or_delete_outfile(file):
 
     try:
         os.remove(file)
-    except OSError as e:
-        if e.errno != errno.ENOENT:
-            print ('no outfile')
-            raise
+        log.info('removed old outfile {}'.format(file))
+    except OSError:
+        log.info('Outfile doesn\'t exist, creating {}'.format(file))
+    with open(file, "w"):
+        log.info('created outfile {}'.format(file))
+
+
 
 def change(hamsters):
     for hamster in hamsters:
@@ -79,35 +85,126 @@ def change(hamsters):
         passw.clear()
         passw.send_keys(pw)
         passw.send_keys(Keys.RETURN)
+
+        if pw == args.new_password:
+            log.warn('{}s password is identical to new password, '
+                     'skipping'.format(un))
+            fd = open(outfile, 'ab')
+            fd.write(','.join(potato))
+            fd.write('\n')
+            fd.close()
+            log.info('writing account {} to {}'.format(un, outfile))
+            continue
+
         try:
             WebDriverWait(driver, args.timeout).until(
                 EC.title_contains('Official'))
+
+            try:
+                WebDriverWait(driver, args.timeout).until(
+                    EC.presence_of_element_located((By.PARTIAL_LINK_TEXT,
+                                                    'Password')))
+
+                changepw = driver.find_element_by_partial_link_text('Password')
+                changepw.click()
+                try:
+                    WebDriverWait(driver, args.timeout).until(
+                        EC.presence_of_element_located((By.ID, 'id_password')))
+                    oldpw = driver.find_element_by_id('id_current_password')
+                    new1 = driver.find_element_by_id('id_password')
+                    new2 = driver.find_element_by_id('id_confirm_password')
+                    conf = driver.find_element_by_css_selector(
+                        'input.button.button-green.right.match')
+                    oldpw.send_keys(pw)
+                    new1.send_keys(args.new_password)
+                    new2.send_keys(args.new_password)
+                    conf.click()
+
+                    try:
+                        WebDriverWait(driver, args.timeout).until(
+                            EC.text_to_be_present_in_element(
+                                (By.CSS_SELECTOR,
+                                 '.column-9 > p:nth-child(2)'),
+                                                'password has been updated.'))
+
+                        fd = open(outfile, 'ab')
+                        fd.write('ptc,{},{}\n'.format(un,args.new_password))
+                        fd.close()
+                        log.info(
+                            'password changed for account {}'.format(un))
+                        driver.quit()
+
+                    except TimeoutException:
+                        log.warn(
+                            'did not get to correct page with {}'.format(un))
+                        if not args.ignore_bad:
+                            fd = open(outfile, 'ab')
+                            fd.write(','.join(potato))
+                            fd.write('\n')
+                            fd.close()
+                            log.info(
+                                'writing account {} to {}'.format(un, outfile))
+                            driver.save_screenshot('{}Error.png'.format(un))
+                            driver.quit()
+                        else:
+                            log.info('ignoring account {}'.format(un))
+                            driver.save_screenshot('{}Error.png'.format(un))
+                            driver.quit()
+                            continue
+
+                except TimeoutException:
+                    log.warn('did not get to correct page with {}'.format(un))
+                    if not args.ignore_bad:
+                        fd = open(outfile, 'ab')
+                        fd.write(','.join(potato))
+                        fd.write('\n')
+                        fd.close()
+                        log.info(
+                            'writing account {} to {}'.format(un, outfile))
+                    else:
+                        log.info('ignoring account {}'.format(un))
+                    driver.save_screenshot('{}Error.png'.format(un))
+                    driver.quit()
+                    continue
+
+
+            except TimeoutException:
+                log.warn('{} has not validated e-mail'.format(un))
+                if not args.ignore_bad:
+                    fd = open(outfile, 'ab')
+                    fd.write(','.join(potato))
+                    fd.write('\n')
+                    fd.close()
+                    log.info('writing account {} to {}'.format(un, outfile))
+                else:
+                    log.info('ignoring account {}'.format(un))
+                driver.quit()
+                continue
+
+
         except TimeoutException:
             log.warn('{} is not valid'.format(un))
-            fd = open('document.csv', 'ab')
-            fd.write(','.join(potato))
-            fd.write('\n')
-            fd.close()
-            break
-
-        try:
-            WebDriverWait(driver, args.timeout).until(
-                EC.presence_of_element_located((By.XPATH,
-                                                "//*["
-                                                "@id=\"account\"]/fieldset[1]/div/div/a[2]")))
-        except TimeoutException:
-            log.warn('{} has not validated e-mail'.format(un))
-            fd = open('document.csv', 'ab')
-            fd.write(','.join(potato))
-            fd.write('\n')
-            fd.close()
+            if not args.ignore_bad:
+                fd = open(outfile, 'ab')
+                fd.write(','.join(potato))
+                fd.write('\n')
+                fd.close()
+                log.info('writing account {} to {}'.format(un,outfile))
+            else:
+                log.info('ignoring account {}'.format(un))
             driver.quit()
-            break
+            continue
+
+
 
 
 if __name__ == '__main__':
+
     log.info('password-changer is starting')
 
+    if args.outfile == args.accounts:
+        log.critical('you can\'t have the same input and output file silly!')
+        exit(1)
 
     create_or_delete_outfile(outfile)
     if verify_password():
@@ -117,7 +214,12 @@ if __name__ == '__main__':
             ## Check how big should hamster batch be
             with open(FILENAME) as ac:
                 hamsters = csv.reader(ac)
-                jobs = (sum(1 for row in hamsters)) / args.threads
+                total = (sum(1 for row in hamsters))
+                jobs = total / args.threads
+                if total < args.threads:
+                    log.critical('{} accounts, but {} threads, Need fewer '
+                                 'threads'.format(total,args.threads))
+                    exit(1)
 
             with open(FILENAME) as ac:
                 ## Calculate optimal amout of hamsters to send to worker
