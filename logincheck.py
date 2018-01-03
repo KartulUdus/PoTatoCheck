@@ -6,42 +6,10 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from itertools import count, groupby
-import psutil
 from threading import Thread
+from utils.args import get_args
 import csv
-import configargparse
 LOGIN_URL = 'https://club.pokemon.com/us/pokemon-trainer-club/login'
-
-def get_args():
-    parser = configargparse.ArgParser(description='PTC-Login-Check')
-    lcores = psutil.cpu_count(logical=True)
-    parser.add_argument(
-        '-ac',
-        '--accounts',
-        help='path to account file. ex: accounts.csv',
-        required=True)
-
-    parser.add_argument(
-        '-t',
-        '--timeout',
-        help='timeout to wait for signed in hamster',
-        type=int,
-        default=5),
-
-    parser.add_argument(
-        '-th',
-        '--threads',
-        help='how many processes to run in',
-        type=int,
-        default=lcores)
-
-    parser.add_argument(
-        '-iu',
-        '--ignoreunactivated',
-        help='Ignore accounts with unactivated e-mail',
-        action='store_true',
-        default=False)
-    return parser.parse_args()
 
 def check(hamsters):
 
@@ -89,7 +57,7 @@ if __name__ == '__main__':
     args = get_args()
     FILENAME = '{}'.format(args.accounts)
     try:
- ## Check how gig should hamster batch be
+ ## Check how big should hamster batch be
         with open(FILENAME) as ac:
             hamsters = csv.reader(ac)
             jobs = (sum (1 for row in hamsters))/args.threads
