@@ -13,6 +13,28 @@ To run you must have:
 * PhantomJs ([General instructions](PhantomJsInstructions.md))
 
 
+# Password changer:
+
+
+have your accounts ready in this format in the root of the project named
+accounts.csv:
+```
+ptc,user,pass
+ptc,user2,pass2
+```
+Run with:
+`python password-changer.py -ac accounts.csv -pwd NewP4SSword! -of changed.csv`
+
+Console logs will show unsuccessful changes and store new accounts file in 
+changed.csv.
+
+Should you wish to ignore accounts that could not sign in, run with `-ib` 
+argument
+
+Available arguments for password-changer can also be placed in 
+`/config/config.ini`
+examples available in `config/config.ini.example`
+
 # Account login check:
 
 have your accounts ready in this format in the root of the project named
@@ -39,24 +61,4 @@ Should you wish to ignore accounts that haven't verified the e-mail (yet) use:
 
 `python logincheck.py -ac accounts.csv -t 10 -iu`
 
-# Password changer:
 
-
-have your accounts ready in this format in the root of the project named
-accounts.csv:
-```
-ptc,user,pass
-ptc,user2,pass2
-```
-Run with:
-`python logincheck.py -ac accounts.csv -pwd NewP4SSword! -of changed.csv`
-
-Console logs will show unsuccessful changes and store new accounts file in 
-changed.csv.
-
-Should you wish to ignore accounts that could not sign in, run with `-ib` 
-argument
-
-Available arguments for password-changer can also be placed in 
-`/config/config.ini`
-examples available in `config/config.ini.example`
