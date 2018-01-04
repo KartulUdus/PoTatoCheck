@@ -9,3 +9,5 @@
 #ignore-bad             # Ignores accounts with unvalidated e-mails and wrong credentials
 
 #timeout:               # Amount of seconds to timeout after waiting for ptd
+
+#email                  # E-mail to resend verifycation links to. accounts e-mail will be assumed as abc+<username>@def.com

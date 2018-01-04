@@ -51,6 +51,12 @@ def get_args():
         default=lcores)
 
     parser.add_argument(
+        '-e',
+        '--email',
+        help='e-mail address to change or resend to',
+        default=False)
+
+    parser.add_argument(
         '-iu',
         '--ignoreunactivated',
         help='Ignore accounts with unactivated e-mail',

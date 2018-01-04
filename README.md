@@ -35,6 +35,27 @@ Available arguments for password-changer can also be placed in
 `/config/config.ini`
 examples available in `config/config.ini.example`
 
+# E-mail resender:
+
+
+have your accounts ready in this format in the root of the project named
+accounts.csv:
+```
+ptc,user,pass
+ptc,user2,pass2
+```
+Run with:
+`python email-resender.py -ac accounts.csv -e verify@mydomain.com`
+
+Console logs will show if account is valid, already verified or will try to resend the verification e-mail.
+
+From example above, e-mail will be assumed as `verify+user@mydomain.com`
+
+
+Available arguments for password-changer can also be placed in 
+`/config/config.ini`
+examples available in `config/config.ini.example`
+
 # Account login check:
 
 have your accounts ready in this format in the root of the project named
