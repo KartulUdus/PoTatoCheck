@@ -97,7 +97,7 @@ def send(hamsters):
 
             except TimeoutException:
                 log.warn('ignoring account {},'
-                         ' e-mail arleady verified'.format(un))
+                         ' e-mail already verified'.format(un))
                 driver.quit()
                 continue
 

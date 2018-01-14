@@ -13,7 +13,7 @@ Next, you will need to download the PhantomJS. You can download the latest stabl
 Once the download is complete, extract the downloaded archive file to desired system location:
 
 `sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/`
-Next, create a symlink of PhantomJS binary file to systems bin dirctory:
+Next, create a symlink of PhantomJS binary file to systems bin directory:
 
 `sudo ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/`
 

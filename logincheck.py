@@ -8,8 +8,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from itertools import count, groupby
 from threading import Thread
 from utils.args import get_args
-import csv
+import csv, logging
 LOGIN_URL = 'https://club.pokemon.com/us/pokemon-trainer-club/login'
+
+logging.basicConfig(level=logging.INFO,
+    format='%(asctime)s [%(threadName)16s][%(module)14s]'
+           '[%(levelname)8s] %(message)s')
+
+log = logging.getLogger(__name__)
 
 def check(hamsters):
 
@@ -60,7 +66,12 @@ if __name__ == '__main__':
  ## Check how big should hamster batch be
         with open(FILENAME) as ac:
             hamsters = csv.reader(ac)
-            jobs = (sum (1 for row in hamsters))/args.threads
+            total = (sum(1 for row in hamsters))
+            jobs = total / args.threads
+            if total < args.threads:
+                log.critical('{} accounts, but {} threads, Need fewer '
+                             'threads'.format(total, args.threads))
+                exit(1)
 
         with open(FILENAME) as ac:
             ## Calculate optimal amout of hamsters to send to worker
